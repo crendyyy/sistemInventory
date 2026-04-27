@@ -5,11 +5,14 @@
         </h2>
     </x-slot>
 
+    @php
+        $productsData = $products->map(function($p) { 
+            return ['id' => $p->id, 'name' => $p->name, 'price' => $p->sell_price, 'stock' => $p->stock]; 
+        });
+    @endphp
     <!-- Alpine.js Product Data to pass to JS -->
     <script>
-        const productsData = @json($products->map(function($p) { 
-            return ['id' => $p->id, 'name' => $p->name, 'price' => $p->sell_price, 'stock' => $p->stock]; 
-        }));
+        const productsData = @json($productsData);
     </script>
 
     @if ($errors->any())

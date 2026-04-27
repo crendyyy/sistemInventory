@@ -38,4 +38,9 @@ class Purchase extends Model
     {
         return $this->hasMany(PurchaseItem::class);
     }
+
+    public function cashTransactions()
+    {
+        return $this->morphMany(CashTransaction::class, 'transactionable');
+    }
 }
