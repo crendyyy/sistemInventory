@@ -9,7 +9,7 @@ class CashTransaction extends Model
     protected $fillable = [
         'transaction_date', 'description', 'type', 'amount',
         'balance', 'reference', 'transactionable_type',
-        'transactionable_id', 'notes'
+        'transactionable_id', 'notes', 'user_id'
     ];
 
     protected $casts = [
@@ -21,5 +21,10 @@ class CashTransaction extends Model
     public function transactionable()
     {
         return $this->morphTo();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
     }
 }

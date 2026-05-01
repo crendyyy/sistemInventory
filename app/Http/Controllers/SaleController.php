@@ -106,6 +106,7 @@ class SaleController extends Controller
                     'description' => 'Pembayaran Penjualan ' . $invoiceNumber,
                     'transactionable_type' => Sale::class,
                     'transactionable_id' => $sale->id,
+                    'user_id' => auth()->id(),
                 ]);
             }
 

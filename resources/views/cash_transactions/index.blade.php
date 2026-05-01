@@ -83,6 +83,7 @@
                         <th scope="col" class="px-6 py-3">Tanggal</th>
                         <th scope="col" class="px-6 py-3">Deskripsi</th>
                         <th scope="col" class="px-6 py-3">Referensi</th>
+                        <th scope="col" class="px-6 py-3">Diinput Oleh</th>
                         <th scope="col" class="px-6 py-3 text-right">Debit (Masuk)</th>
                         <th scope="col" class="px-6 py-3 text-right">Kredit (Keluar)</th>
                         <th scope="col" class="px-6 py-3 text-center">Aksi</th>
@@ -99,6 +100,16 @@
                             @endif
                         </td>
                         <td class="px-6 py-4">{{ $cash->reference ?? '-' }}</td>
+                        <td class="px-6 py-4">
+                            @if($cash->user)
+                                <span class="inline-flex items-center gap-1.5">
+                                    <span class="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">{{ strtoupper(substr($cash->user->name, 0, 1)) }}</span>
+                                    <span class="text-gray-900 dark:text-white text-sm">{{ $cash->user->name }}</span>
+                                </span>
+                            @else
+                                <span class="text-gray-400 text-xs italic">Sistem</span>
+                            @endif
+                        </td>
                         
                         <td class="px-6 py-4 text-right">
                             @if($cash->type == 'debit')
@@ -130,7 +141,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">Tidak ada transaksi kas ditemukan.</td>
+                        <td colspan="7" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">Tidak ada transaksi kas ditemukan.</td>
                     </tr>
                     @endforelse
                 </tbody>

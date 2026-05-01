@@ -103,6 +103,7 @@ class PurchaseController extends Controller
                     'description' => 'Pembayaran Pembelian ' . $invoiceNumber,
                     'transactionable_type' => Purchase::class,
                     'transactionable_id' => $purchase->id,
+                    'user_id' => auth()->id(),
                 ]);
             }
 

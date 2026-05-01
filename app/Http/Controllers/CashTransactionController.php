@@ -12,7 +12,7 @@ class CashTransactionController extends Controller
         $search = $request->input('search');
         $type = $request->input('type');
 
-        $transactions = CashTransaction::with('transactionable')
+        $transactions = CashTransaction::with('transactionable', 'user')
             ->when($search, function ($query, $search) {
                 return $query->where('reference', 'like', "%{$search}%")
                              ->orWhere('description', 'like', "%{$search}%");
@@ -46,6 +46,8 @@ class CashTransactionController extends Controller
             'reference' => 'nullable|string|max:255',
             'description' => 'required|string',
         ]);
+
+        $validated['user_id'] = auth()->id();
 
         CashTransaction::create($validated);
 
