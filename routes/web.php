@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('purchases', PurchaseController::class);
     Route::resource('sales', SaleController::class);
     Route::resource('cash-transactions', CashTransactionController::class);
+    Route::patch('cash-transactions/{cash_transaction}/cancel', [CashTransactionController::class, 'cancel'])->name('cash-transactions.cancel');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
