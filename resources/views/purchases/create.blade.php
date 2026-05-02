@@ -39,7 +39,7 @@
                         <select name="supplier_id" required class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
                             <option value="">Pilih Supplier</option>
                             @foreach($suppliers as $supplier)
-                                <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                <option value="{{ $supplier->id }}">{{ $supplier->kode }} - {{ $supplier->name }}</option>
                             @endforeach
                         </select>
                     </div>

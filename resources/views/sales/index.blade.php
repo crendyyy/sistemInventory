@@ -46,7 +46,7 @@
                     <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border-b dark:border-gray-700 last:border-0">
                         <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ $sale->invoice_no }}</td>
                         <td class="px-6 py-4">{{ \Carbon\Carbon::parse($sale->sale_date)->format('dM Y') }}</td>
-                        <td class="px-6 py-4">{{ $sale->customer->name ?? '-' }}</td>
+                        <td class="px-6 py-4">{{ $sale->customer->kode ?? '' }} - {{ $sale->customer->name ?? '-' }}</td>
                         <td class="px-6 py-4 text-right">Rp {{ number_format($sale->total, 0, ',', '.') }}</td>
                         <td class="px-6 py-4 text-center">
                             @if($sale->status == 'lunas')

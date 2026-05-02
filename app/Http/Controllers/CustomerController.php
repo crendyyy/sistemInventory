@@ -13,6 +13,7 @@ class CustomerController extends Controller
 
         $customers = Customer::when($search, function ($query, $search) {
                 return $query->where('name', 'like', "%{$search}%")
+                             ->orWhere('kode', 'like', "%{$search}%")
                              ->orWhere('phone', 'like', "%{$search}%");
             })
             ->latest()
@@ -23,12 +24,18 @@ class CustomerController extends Controller
 
     public function create()
     {
-        return view('customers.create');
+        // Auto-generate kode customer
+        $lastCustomer = Customer::withTrashed()->orderBy('id', 'desc')->first();
+        $nextId = $lastCustomer ? $lastCustomer->id + 1 : 1;
+        $kode = 'CUST-' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
+
+        return view('customers.create', compact('kode'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'kode' => 'required|string|max:50|unique:customers,kode',
             'name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
@@ -50,6 +57,7 @@ class CustomerController extends Controller
     public function update(Request $request, Customer $customer)
     {
         $validated = $request->validate([
+            'kode' => 'required|string|max:50|unique:customers,kode,' . $customer->id,
             'name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',

@@ -74,7 +74,7 @@
                     <div class="space-y-4">
                         <div>
                             <span class="block text-sm text-gray-500 dark:text-gray-400">Customer</span>
-                            <span class="block font-medium text-gray-900 dark:text-white">{{ $sale->customer->name ?? 'Tidak ada' }}</span>
+                            <span class="block font-medium text-gray-900 dark:text-white">{{ $sale->customer->kode ?? '' }} - {{ $sale->customer->name ?? 'Tidak ada' }}</span>
                         </div>
                         <div>
                             <span class="block text-sm text-gray-500 dark:text-gray-400">Tanggal Transaksi</span>

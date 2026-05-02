@@ -36,7 +36,6 @@
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3 w-16">ID</th>
                         <th scope="col" class="px-6 py-3">Nama Kategori</th>
                         <th scope="col" class="px-6 py-3 text-center">Jumlah Produk</th>
                         <th scope="col" class="px-6 py-3 text-right">Aksi</th>
@@ -45,7 +44,6 @@
                 <tbody>
                     @forelse ($categories as $category)
                     <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border-b dark:border-gray-700 last:border-0">
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ $category->id }}</td>
                         <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ $category->name }}</td>
                         <td class="px-6 py-4 text-center">
                             <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
@@ -64,7 +62,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">Tidak ada data kategori ditemukan.</td>
+                        <td colspan="3" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">Tidak ada data kategori ditemukan.</td>
                     </tr>
                     @endforelse
                 </tbody>

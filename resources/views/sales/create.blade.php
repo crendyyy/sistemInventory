@@ -44,7 +44,7 @@
                         <select name="customer_id" required class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
                             <option value="">Pilih Customer</option>
                             @foreach($customers as $customer)
-                                <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                <option value="{{ $customer->id }}">{{ $customer->kode }} - {{ $customer->name }}</option>
                             @endforeach
                         </select>
                     </div>

@@ -12,6 +12,11 @@
                 @method('PUT')
                 
                 <div>
+                    <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Kode Supplier <span class="text-red-500">*</span></label>
+                    <input type="text" name="kode" value="{{ old('kode', $supplier->kode) }}" required class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                </div>
+
+                <div>
                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Nama Supplier <span class="text-red-500">*</span></label>
                     <input type="text" name="name" value="{{ old('name', $supplier->name) }}" required autofocus class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
                 </div>
