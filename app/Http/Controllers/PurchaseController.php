@@ -88,10 +88,10 @@ class PurchaseController extends Controller
                     'subtotal' => $subtotal,
                 ]);
 
-                // Update stock and HPP (buy_price)
+                // Update HPP (buy_price) and stock immediately
                 $product = Product::find($item['product_id']);
-                $product->increment('stock', $item['quantity']);
                 $product->update(['buy_price' => $item['unit_price']]);
+                $product->increment('stock', $item['quantity']);
             }
 
             // Create Cash Transaction if paid
@@ -130,7 +130,7 @@ class PurchaseController extends Controller
         try {
             DB::beginTransaction();
 
-            // Reverse stock
+            // Reverse stock unconditionally
             foreach ($purchase->items as $item) {
                 $product = Product::find($item->product_id);
                 if ($product) {

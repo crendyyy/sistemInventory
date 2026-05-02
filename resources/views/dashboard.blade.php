@@ -134,7 +134,7 @@
                             </td>
                             <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ $sale->customer->kode ?? '' }} - {{ $sale->customer->name ?? '-' }}</td>
                             <td class="px-6 py-4 text-right font-bold text-red-600 dark:text-red-400">Rp {{ number_format($sale->remaining, 0, ',', '.') }}</td>
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-6 py-4 text-center whitespace-nowrap">
                                 @if($sale->status == 'belum_bayar')
                                     <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Belum Lunas</span>
                                 @else
