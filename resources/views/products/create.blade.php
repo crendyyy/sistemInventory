@@ -13,7 +13,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Kode Produk <span class="text-red-500">*</span></label>
-                        <input type="text" name="code" value="{{ old('code') }}" required autofocus class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                        <input type="text" name="code" value="{{ old('code', $kode) }}" required autofocus class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
                         @error('code') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
 

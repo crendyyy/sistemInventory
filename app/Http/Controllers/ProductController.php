@@ -32,7 +32,13 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('products.create', compact('categories'));
+        
+        // Auto-generate code (e.g. PRD-0001)
+        $latestProduct = Product::latest('id')->first();
+        $nextId = $latestProduct ? $latestProduct->id + 1 : 1;
+        $kode = 'PRD-' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
+
+        return view('products.create', compact('categories', 'kode'));
     }
 
     public function store(Request $request)
