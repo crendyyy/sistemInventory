@@ -80,12 +80,14 @@
 
                                 <div class="w-full md:w-2/12">
                                     <label class="block text-xs font-medium text-gray-700 dark:text-gray-400 mb-1">Harga Jual (Rp) <span class="text-red-500">*</span></label>
-                                    <input type="number" x-model.number="item.unit_price" :name="`items[${index}][unit_price]`" required min="0" class="block w-full text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                                    <input type="text" :value="item.unit_price ? new Intl.NumberFormat('id-ID').format(item.unit_price) : ''" @input="let val = $event.target.value.replace(/[^0-9]/g, ''); item.unit_price = val ? parseInt(val) : 0; $event.target.value = val ? new Intl.NumberFormat('id-ID').format(val) : '';" required class="block w-full text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                                    <input type="hidden" :name="`items[${index}][unit_price]`" :value="item.unit_price">
                                 </div>
 
                                 <div class="w-full md:w-2/12">
                                     <label class="block text-xs font-medium text-gray-700 dark:text-gray-400 mb-1">Qty <span class="text-red-500">*</span></label>
-                                    <input type="number" x-model.number="item.quantity" :name="`items[${index}][quantity]`" required min="1" :max="getMaxStock(item.product_id)" class="block w-full text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                                    <input type="text" :value="item.quantity ? new Intl.NumberFormat('id-ID').format(item.quantity) : ''" @input="let val = $event.target.value.replace(/[^0-9]/g, ''); let num = val ? parseInt(val) : 0; let maxStock = getMaxStock(item.product_id); item.quantity = num > maxStock ? maxStock : num; $event.target.value = item.quantity ? new Intl.NumberFormat('id-ID').format(item.quantity) : '';" required class="block w-full text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                                    <input type="hidden" :name="`items[${index}][quantity]`" :value="item.quantity">
                                 </div>
 
                                 <div class="w-full md:w-3/12">
@@ -124,7 +126,8 @@
                         <div>
                             <label class="block font-medium text-sm text-gray-700 dark:text-gray-300 mb-1">Jumlah Dibayar (Rp) <span class="text-red-500">*</span></label>
                             <div class="flex gap-2">
-                                <input type="number" name="amount_paid" x-model.number="amountPaid" min="0" class="block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                                <input type="text" :value="amountPaid ? new Intl.NumberFormat('id-ID').format(amountPaid) : ''" @input="let val = $event.target.value.replace(/[^0-9]/g, ''); amountPaid = val ? parseInt(val) : 0; $event.target.value = val ? new Intl.NumberFormat('id-ID').format(val) : '';" class="block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                                <input type="hidden" name="amount_paid" :value="amountPaid">
                                 <button type="button" @click="amountPaid = calculateTotal()" class="px-3 py-2 bg-gray-200 text-gray-800 text-sm rounded hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 whitespace-nowrap">
                                     Set Lunas
                                 </button>

@@ -152,4 +152,65 @@ class PurchaseController extends Controller
             return back()->with('error', 'Gagal menghapus transaksi: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Add payment to an existing purchase.
+     */
+    public function addPayment(Request $request, Purchase $purchase)
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:1',
+            'payment_date' => 'required|date',
+            'payment_notes' => 'nullable|string|max:500',
+        ]);
+
+        $amount = $request->amount;
+        $maxPayable = $purchase->remaining;
+
+        if ($amount > $maxPayable) {
+            return back()->with('error', "Jumlah pembayaran (Rp " . number_format($amount, 0, ',', '.') . ") melebihi sisa hutang (Rp " . number_format($maxPayable, 0, ',', '.') . ").");
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $newPaid = $purchase->paid_amount + $amount;
+            $newRemaining = max(0, $purchase->total - $newPaid);
+
+            // Determine new status
+            $newStatus = 'belum_bayar';
+            if ($newPaid >= $purchase->total) {
+                $newStatus = 'lunas';
+            } elseif ($newPaid > 0) {
+                $newStatus = 'sebagian';
+            }
+
+            $purchase->update([
+                'paid_amount' => $newPaid,
+                'remaining' => $newRemaining,
+                'status' => $newStatus,
+                'paid_date' => $newStatus == 'lunas' ? $request->payment_date : null,
+            ]);
+
+            // Create Cash Transaction (credit = kas keluar)
+            CashTransaction::create([
+                'transaction_date' => $request->payment_date,
+                'type' => 'credit',
+                'amount' => $amount,
+                'reference' => $purchase->invoice_no,
+                'description' => 'Pembayaran Pembelian ' . $purchase->invoice_no . ($request->payment_notes ? ' - ' . $request->payment_notes : ''),
+                'transactionable_type' => Purchase::class,
+                'transactionable_id' => $purchase->id,
+                'user_id' => auth()->id(),
+            ]);
+
+            DB::commit();
+
+            return back()->with('success', 'Pembayaran sebesar Rp ' . number_format($amount, 0, ',', '.') . ' berhasil dicatat. Status: ' . ucfirst(str_replace('_', ' ', $newStatus)));
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal mencatat pembayaran: ' . $e->getMessage());
+        }
+    }
 }

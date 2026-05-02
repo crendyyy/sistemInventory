@@ -41,22 +41,22 @@
 
                     <div>
                         <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Harga Beli (Rp) <span class="text-red-500">*</span></label>
-                        <input type="number" name="buy_price" value="{{ old('buy_price', 0) }}" min="0" required class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                        <input type="text" name="buy_price" value="{{ old('buy_price', 0) }}" required class="input-number mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
                     </div>
 
                     <div>
                         <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Harga Jual (Rp) <span class="text-red-500">*</span></label>
-                        <input type="number" name="sell_price" value="{{ old('sell_price', 0) }}" min="0" required class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                        <input type="text" name="sell_price" value="{{ old('sell_price', 0) }}" required class="input-number mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
                     </div>
 
                     <div>
                         <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Stok Awal <span class="text-red-500">*</span></label>
-                        <input type="number" name="stock" value="{{ old('stock', 0) }}" min="0" required class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                        <input type="text" name="stock" value="{{ old('stock', 0) }}" required class="input-number mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
                     </div>
 
                     <div>
                         <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Batas Stok Minimum <span class="text-red-500">*</span></label>
-                        <input type="number" name="stock_minimum" value="{{ old('stock_minimum', 5) }}" min="0" required class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                        <input type="text" name="stock_minimum" value="{{ old('stock_minimum', 5) }}" required class="input-number mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
                         <p class="text-xs text-gray-500 mt-1">Notifikasi stok menipis akan muncul jika stok di bawah batas ini.</p>
                     </div>
                 </div>

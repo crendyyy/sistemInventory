@@ -5,6 +5,17 @@
         </h2>
     </x-slot>
 
+    @if (session('success'))
+        <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline">{{ session('success') }}</span>
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline">{{ session('error') }}</span>
+        </div>
+    @endif
+
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Main details -->
         <div class="md:col-span-2">
@@ -42,7 +53,7 @@
                 </div>
             </div>
             
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Riwayat Pembayaran (Kas Masuk)</h3>
                     @if($sale->cashTransactions->count() > 0)
@@ -64,6 +75,38 @@
                     @endif
                 </div>
             </div>
+
+            @if($sale->status != 'lunas')
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        Tambah Pembayaran
+                    </h3>
+                    <form action="{{ route('sales.payment', $sale) }}" method="POST" class="space-y-4">
+                        @csrf
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Jumlah Bayar (Rp) <span class="text-red-500">*</span></label>
+                                <input type="text" name="amount" required placeholder="Masukkan jumlah" class="input-number block w-full text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                                <p class="text-xs text-gray-500 mt-1">Sisa tagihan: <span class="font-semibold text-red-600">Rp {{ number_format($sale->remaining, 0, ',', '.') }}</span></p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tanggal Bayar <span class="text-red-500">*</span></label>
+                                <input type="date" name="payment_date" value="{{ date('Y-m-d') }}" required class="block w-full text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Catatan (opsional)</label>
+                            <input type="text" name="payment_notes" placeholder="Contoh: Transfer BCA, Tunai, dll" class="block w-full text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                        </div>
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition">
+                            Catat Pembayaran
+                        </button>
+                    </form>
+                </div>
+            </div>
+            @endif
         </div>
 
         <!-- Sidebar details -->

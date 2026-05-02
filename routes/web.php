@@ -24,7 +24,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('products', ProductController::class);
     
     Route::resource('purchases', PurchaseController::class);
+    Route::post('purchases/{purchase}/payment', [PurchaseController::class, 'addPayment'])->name('purchases.payment');
     Route::resource('sales', SaleController::class);
+    Route::post('sales/{sale}/payment', [SaleController::class, 'addPayment'])->name('sales.payment');
     Route::resource('cash-transactions', CashTransactionController::class);
     Route::patch('cash-transactions/{cash_transaction}/cancel', [CashTransactionController::class, 'cancel'])->name('cash-transactions.cancel');
 

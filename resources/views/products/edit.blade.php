@@ -41,22 +41,22 @@
 
                     <div>
                         <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Harga Beli (Rp) <span class="text-red-500">*</span></label>
-                        <input type="number" name="buy_price" value="{{ old('buy_price', preg_replace('/\.00$/','', $product->buy_price)) }}" min="0" required class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                        <input type="text" name="buy_price" value="{{ old('buy_price', preg_replace('/\.00$/','', $product->buy_price)) }}" required class="input-number mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
                     </div>
 
                     <div>
                         <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Harga Jual (Rp) <span class="text-red-500">*</span></label>
-                        <input type="number" name="sell_price" value="{{ old('sell_price', preg_replace('/\.00$/','', $product->sell_price)) }}" min="0" required class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                        <input type="text" name="sell_price" value="{{ old('sell_price', preg_replace('/\.00$/','', $product->sell_price)) }}" required class="input-number mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
                     </div>
 
                     <div>
                         <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Stok Saat Ini <span class="text-red-500">*</span></label>
-                        <input type="number" name="stock" value="{{ old('stock', $product->stock) }}" min="0" required class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                        <input type="text" name="stock" value="{{ old('stock', $product->stock) }}" required class="input-number mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
                     </div>
 
                     <div>
                         <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Batas Stok Minimum <span class="text-red-500">*</span></label>
-                        <input type="number" name="stock_minimum" value="{{ old('stock_minimum', $product->stock_minimum) }}" min="0" required class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                        <input type="text" name="stock_minimum" value="{{ old('stock_minimum', $product->stock_minimum) }}" required class="input-number mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
                     </div>
                 </div>
 

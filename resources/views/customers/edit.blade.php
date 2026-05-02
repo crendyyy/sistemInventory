@@ -34,7 +34,7 @@
 
                 <div>
                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Credit Limit</label>
-                    <input type="number" name="credit_limit" value="{{ old('credit_limit', $customer->credit_limit) }}" min="0" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                    <input type="text" name="credit_limit" value="{{ old('credit_limit', preg_replace('/\.00$/','', $customer->credit_limit)) }}" class="input-number mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
                 </div>
 
                 <div>

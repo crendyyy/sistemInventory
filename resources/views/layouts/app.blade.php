@@ -36,6 +36,33 @@
                 {{ $slot }}
             </div>
         </main>
+        <script>
+            document.addEventListener('input', function (e) {
+                if (e.target.classList.contains('input-number')) {
+                    let cursorPosition = e.target.selectionStart;
+                    let originalLength = e.target.value.length;
+                    
+                    let value = e.target.value.replace(/[^0-9]/g, '');
+                    
+                    if (value !== '') {
+                        e.target.value = new Intl.NumberFormat('id-ID').format(value);
+                    } else {
+                        e.target.value = '';
+                    }
+                    
+                    let newLength = e.target.value.length;
+                    cursorPosition = cursorPosition + (newLength - originalLength);
+                    e.target.setSelectionRange(cursorPosition, cursorPosition);
+                }
+            });
+
+            document.addEventListener('submit', function(e) {
+                let inputs = e.target.querySelectorAll('.input-number');
+                inputs.forEach(input => {
+                    input.value = input.value.replace(/\./g, '');
+                });
+            });
+        </script>
     </div>
 </body>
 </html>

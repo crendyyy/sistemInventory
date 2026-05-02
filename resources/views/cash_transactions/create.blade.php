@@ -33,7 +33,7 @@
 
                 <div>
                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Jumlah Uang (Rp) <span class="text-red-500">*</span></label>
-                    <input type="number" name="amount" value="{{ old('amount') }}" required min="1" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                    <input type="text" name="amount" value="{{ old('amount') }}" required class="input-number mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
                 </div>
 
                 <div>
