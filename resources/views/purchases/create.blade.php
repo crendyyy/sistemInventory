@@ -74,8 +74,11 @@
                                 </div>
 
                                 <div class="w-full md:w-2/12">
-                                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-400 mb-1">Harga Beli (Rp) <span class="text-red-500">*</span></label>
+                                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-400 mb-1">Harga Beli Baru (Rp) <span class="text-red-500">*</span></label>
                                     <input type="number" x-model.number="item.unit_price" :name="`items[${index}][unit_price]`" required min="0" class="block w-full text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                                    <span class="text-[10px] text-gray-500 mt-1 block" x-show="item.product_id">
+                                        HPP Lama: Rp <span x-text="formatMoney(getCurrentHPP(item.product_id))"></span>
+                                    </span>
                                 </div>
 
                                 <div class="w-full md:w-2/12">
@@ -168,6 +171,12 @@
                     if (product && item.unit_price == 0) {
                         item.unit_price = product.price; // Gunakan angka aslinya, tanpa titik
                     }
+                },
+                
+                getCurrentHPP(productId) {
+                    if (!productId) return 0;
+                    const product = this.availableProducts.find(p => p.id == productId);
+                    return product ? product.price : 0;
                 },
                 
                 calculateTotal() {

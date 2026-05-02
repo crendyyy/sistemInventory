@@ -88,9 +88,10 @@ class PurchaseController extends Controller
                     'subtotal' => $subtotal,
                 ]);
 
-                // Update stock
+                // Update stock and HPP (buy_price)
                 $product = Product::find($item['product_id']);
                 $product->increment('stock', $item['quantity']);
+                $product->update(['buy_price' => $item['unit_price']]);
             }
 
             // Create Cash Transaction if paid
