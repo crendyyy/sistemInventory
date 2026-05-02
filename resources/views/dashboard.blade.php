@@ -112,27 +112,30 @@
             <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                     <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    Piutang Penjualan
+                    Daftar Tagihan
                 </h3>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-6 py-3">Tanggal</th>
+                            <th scope="col" class="px-6 py-3">Invoice</th>
                             <th scope="col" class="px-6 py-3">Customer</th>
-                            <th scope="col" class="px-6 py-3 text-right">Total</th>
+                            <th scope="col" class="px-6 py-3 text-right">Sisa Tagihan</th>
                             <th scope="col" class="px-6 py-3 text-center">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($piutang as $sale)
-                        <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border-b dark:border-gray-700 last:border-0">
-                            <td class="px-6 py-4 whitespace-nowrap">{{ $sale->transaction_date->format('d/m/Y') }}</td>
-                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ $sale->customer->name ?? '-' }}</td>
-                            <td class="px-6 py-4 text-right">Rp {{ number_format($sale->total_amount, 0, ',', '.') }}</td>
+                        <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border-b dark:border-gray-700 last:border-0 cursor-pointer" onclick="window.location='{{ route('sales.show', $sale) }}'">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="font-medium text-gray-900 dark:text-white">{{ $sale->invoice_no }}</span>
+                                <span class="block text-xs text-gray-400">{{ \Carbon\Carbon::parse($sale->sale_date)->format('d/m/Y') }}</span>
+                            </td>
+                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ $sale->customer->kode ?? '' }} - {{ $sale->customer->name ?? '-' }}</td>
+                            <td class="px-6 py-4 text-right font-bold text-red-600 dark:text-red-400">Rp {{ number_format($sale->remaining, 0, ',', '.') }}</td>
                             <td class="px-6 py-4 text-center">
-                                @if($sale->payment_status == 'unpaid')
+                                @if($sale->status == 'belum_bayar')
                                     <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Belum Lunas</span>
                                 @else
                                     <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">Sebagian</span>
@@ -144,7 +147,7 @@
                             <td colspan="4" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                                 <div class="flex flex-col items-center justify-center">
                                     <svg class="w-8 h-8 mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                    Tidak ada piutang penjualan
+                                    Tidak ada tagihan belum lunas
                                 </div>
                             </td>
                         </tr>

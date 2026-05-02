@@ -90,6 +90,22 @@
                                 <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Belum Lunas</span>
                             @endif
                         </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500 dark:text-gray-400">Total</span>
+                                <span class="font-medium text-gray-900 dark:text-white">Rp {{ number_format($sale->total, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500 dark:text-gray-400">Dibayar</span>
+                                <span class="font-medium text-green-600 dark:text-green-400">Rp {{ number_format($sale->paid_amount, 0, ',', '.') }}</span>
+                            </div>
+                            @if($sale->remaining > 0)
+                            <div class="flex justify-between text-sm border-t border-gray-200 dark:border-gray-600 pt-2">
+                                <span class="text-gray-500 dark:text-gray-400 font-medium">Sisa Tagihan</span>
+                                <span class="font-bold text-red-600 dark:text-red-400">Rp {{ number_format($sale->remaining, 0, ',', '.') }}</span>
+                            </div>
+                            @endif
+                        </div>
                         <div>
                             <span class="block text-sm text-gray-500 dark:text-gray-400">Catatan</span>
                             <p class="text-sm font-medium text-gray-900 dark:text-white mt-1">{{ $sale->notes ?? '-' }}</p>

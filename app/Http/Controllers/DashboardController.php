@@ -30,8 +30,8 @@ class DashboardController extends Controller
                                      ->sum('total');
 
         // 3. Saldo Kas
-        $totalDebit = CashTransaction::where('type', 'debit')->sum('amount');
-        $totalCredit = CashTransaction::where('type', 'credit')->sum('amount');
+        $totalDebit = CashTransaction::active()->where('type', 'debit')->sum('amount');
+        $totalCredit = CashTransaction::active()->where('type', 'credit')->sum('amount');
         $saldoKas = $totalDebit - $totalCredit;
 
         // 4. Produk Stok Menipis
