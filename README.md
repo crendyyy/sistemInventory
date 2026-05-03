@@ -6,17 +6,16 @@ Sistem Inventory adalah aplikasi manajemen inventaris berbasis web yang dibangun
 
 ## ✨ Fitur Utama
 
-- **Dashboard** — Ringkasan statistik bisnis secara real-time (total produk, penjualan, pembelian, dll.)
-- **Manajemen Produk** — CRUD produk lengkap dengan kategori dan tracking stok
-- **Manajemen Kategori** — Pengelompokan produk berdasarkan kategori
-- **Manajemen Supplier** — Pencatatan data supplier untuk pembelian barang
-- **Manajemen Pelanggan** — Pencatatan data pelanggan untuk penjualan
-- **Transaksi Pembelian** — Pencatatan pembelian barang dari supplier dengan detail item
-- **Transaksi Penjualan** — Pencatatan penjualan barang ke pelanggan dengan detail item
-- **Transaksi Kas** — Pencatatan arus kas masuk dan keluar
-- **Autentikasi** — Login, register, dan manajemen profil pengguna
-- **Export PDF** — Generate laporan dalam format PDF
-- **Export Excel** — Generate laporan dalam format Excel
+- **Dashboard Interaktif** — Ringkasan statistik bisnis secara real-time, dilengkapi daftar *Produk Stok Menipis*, *Tagihan (Piutang)*, dan *Barang Inden Belum Diterima*.
+- **Tema UI Modern** — Antarmuka pengguna yang bersih dan modern (bernuansa *Navy & Blue*), dilengkapi dengan tombol **Dark Mode / Light Mode Switcher** di *topbar*.
+- **Manajemen Produk** — CRUD produk lengkap dengan kategori dan pelacakan stok yang terintegrasi otomatis.
+- **Fitur Barang Inden (Pre-Order)** — Mendukung pembelian sistem Inden, di mana penambahan stok ditangguhkan hingga barang dikonfirmasi sudah diterima secara fisik.
+- **Transaksi Pembelian & Penjualan** — Pencatatan transaksi yang mendetail, mendukung status pembayaran dinamis (*Lunas, Down Payment, Belum Bayar*).
+- **Buku Kas Terintegrasi** — Pencatatan arus kas otomatis dari transaksi maupun manual, dilengkapi dengan **User Tracking** (pelacakan siapa yang mencatat kas).
+- **Manajemen Kontak** — Pengelolaan data *Supplier* dan *Customer*.
+- **Autentikasi Terpadu** — Halaman *Login* & *Register* bergaya modern, serta manajemen profil pengguna.
+- **Export Laporan** — Mendukung cetak laporan transaksi dan kas ke dalam format **PDF & Excel**.
+- **Realistic Data Seeder** — Dilengkapi dengan *seeder* canggih untuk menghasilkan puluhan data uji coba yang logis (skenario lunas/DP/ngutang, kas manual, dan variasi stok).
 
 ---
 
