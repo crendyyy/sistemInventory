@@ -19,6 +19,9 @@ class Purchase extends Model
         'paid_amount',
         'remaining',
         'status',
+        'is_inden',
+        'inden_received',
+        'received_date',
         'paid_date',
         'notes'
     ];
@@ -26,8 +29,11 @@ class Purchase extends Model
     protected $casts = [
         'purchase_date' => 'date',
         'paid_date' => 'date',
+        'received_date' => 'date',
         'subtotal' => 'decimal:2',
         'total' => 'decimal:2',
+        'is_inden' => 'boolean',
+        'inden_received' => 'boolean',
     ];
 
     public function supplier()

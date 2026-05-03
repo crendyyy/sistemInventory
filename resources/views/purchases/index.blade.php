@@ -43,14 +43,23 @@
                         <td class="px-6 py-4">{{ \Carbon\Carbon::parse($purchase->purchase_date)->format('dM Y') }}</td>
                         <td class="px-6 py-4">{{ $purchase->supplier->kode ?? '' }} - {{ $purchase->supplier->name ?? '-' }}</td>
                         <td class="px-6 py-4 text-right">Rp {{ number_format($purchase->total, 0, ',', '.') }}</td>
-                        <td class="px-6 py-4 text-center">
-                            @if($purchase->status == 'lunas')
-                                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Lunas</span>
-                            @elseif($purchase->status == 'sebagian')
-                                <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">Down Payment</span>
-                            @else
-                                <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Belum Lunas</span>
-                            @endif
+                        <td class="px-6 py-4 text-center whitespace-nowrap">
+                            <div class="flex flex-col items-center gap-1">
+                                @if($purchase->is_inden)
+                                    @if(!$purchase->inden_received)
+                                        <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">Inden</span>
+                                    @else
+                                        <span class="bg-teal-100 text-teal-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-teal-900 dark:text-teal-300">Diterima</span>
+                                    @endif
+                                @endif
+                                @if($purchase->status == 'lunas')
+                                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Lunas</span>
+                                @elseif($purchase->status == 'sebagian')
+                                    <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">Down Payment</span>
+                                @else
+                                    <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Belum Lunas</span>
+                                @endif
+                            </div>
                         </td>
                         <td class="px-6 py-4 text-right flex justify-end gap-2">
                             <a href="{{ route('purchases.show', $purchase) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat</a>

@@ -43,10 +43,13 @@ class PurchaseController extends Controller
             'items.*.quantity' => 'required|numeric|min:1',
             'items.*.unit_price' => 'required|numeric|min:0',
             'amount_paid' => 'required|numeric|min:0',
+            'is_inden' => 'nullable|boolean',
         ]);
 
         try {
             DB::beginTransaction();
+
+            $isInden = $request->boolean('is_inden');
 
             $totalAmount = 0;
             foreach ($validated['items'] as $item) {
@@ -74,6 +77,8 @@ class PurchaseController extends Controller
                 'paid_amount' => $validated['amount_paid'],
                 'remaining' => max(0, $totalAmount - $validated['amount_paid']),
                 'status' => $paymentStatus == 'paid' ? 'lunas' : ($paymentStatus == 'partial' ? 'sebagian' : 'belum_bayar'),
+                'is_inden' => $isInden,
+                'inden_received' => false,
                 'notes' => $validated['notes'],
             ]);
 
@@ -88,10 +93,12 @@ class PurchaseController extends Controller
                     'subtotal' => $subtotal,
                 ]);
 
-                // Update HPP (buy_price) and stock immediately
+                // Update HPP (buy_price) and stock — ONLY if NOT inden
                 $product = Product::find($item['product_id']);
                 $product->update(['buy_price' => $item['unit_price']]);
-                $product->increment('stock', $item['quantity']);
+                if (!$isInden) {
+                    $product->increment('stock', $item['quantity']);
+                }
             }
 
             // Create Cash Transaction if paid
@@ -101,7 +108,7 @@ class PurchaseController extends Controller
                     'type' => 'credit', 
                     'amount' => $validated['amount_paid'],
                     'reference' => $invoiceNumber,
-                    'description' => 'Pembayaran Pembelian ' . $invoiceNumber,
+                    'description' => 'Pembayaran Pembelian ' . $invoiceNumber . ($isInden ? ' (Inden)' : ''),
                     'transactionable_type' => Purchase::class,
                     'transactionable_id' => $purchase->id,
                     'user_id' => auth()->id(),
@@ -110,8 +117,13 @@ class PurchaseController extends Controller
 
             DB::commit();
 
+            $successMsg = 'Transaksi pembelian berhasil disimpan.';
+            if ($isInden) {
+                $successMsg .= ' (Barang Inden — stok belum ditambahkan)';
+            }
+
             return redirect()->route('purchases.index')
-                ->with('success', 'Transaksi pembelian berhasil disimpan.');
+                ->with('success', $successMsg);
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -130,11 +142,13 @@ class PurchaseController extends Controller
         try {
             DB::beginTransaction();
 
-            // Reverse stock unconditionally
-            foreach ($purchase->items as $item) {
-                $product = Product::find($item->product_id);
-                if ($product) {
-                    $product->decrement('stock', $item->qty);
+            // Reverse stock — only if NOT inden OR inden already received
+            if (!$purchase->is_inden || $purchase->inden_received) {
+                foreach ($purchase->items as $item) {
+                    $product = Product::find($item->product_id);
+                    if ($product) {
+                        $product->decrement('stock', $item->qty);
+                    }
                 }
             }
 
@@ -211,6 +225,45 @@ class PurchaseController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Gagal mencatat pembayaran: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Receive inden (pre-order) goods — increment stock.
+     */
+    public function receiveInden(Request $request, Purchase $purchase)
+    {
+        if (!$purchase->is_inden) {
+            return back()->with('error', 'Transaksi ini bukan barang inden.');
+        }
+
+        if ($purchase->inden_received) {
+            return back()->with('error', 'Barang inden sudah diterima sebelumnya.');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            // Increment stock for all items
+            foreach ($purchase->items as $item) {
+                $product = Product::find($item->product_id);
+                if ($product) {
+                    $product->increment('stock', $item->qty);
+                }
+            }
+
+            $purchase->update([
+                'inden_received' => true,
+                'received_date' => $request->input('received_date', now()->toDateString()),
+            ]);
+
+            DB::commit();
+
+            return back()->with('success', 'Barang inden berhasil diterima! Stok telah ditambahkan.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal menerima barang: ' . $e->getMessage());
         }
     }
 }

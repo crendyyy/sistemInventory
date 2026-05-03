@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     
     Route::resource('purchases', PurchaseController::class);
     Route::post('purchases/{purchase}/payment', [PurchaseController::class, 'addPayment'])->name('purchases.payment');
+    Route::post('purchases/{purchase}/receive', [PurchaseController::class, 'receiveInden'])->name('purchases.receive');
     Route::resource('sales', SaleController::class);
     Route::post('sales/{sale}/payment', [SaleController::class, 'addPayment'])->name('sales.payment');
     Route::resource('cash-transactions', CashTransactionController::class);

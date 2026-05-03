@@ -125,14 +125,42 @@
                         </div>
                         <div>
                             <span class="block text-sm text-gray-500 dark:text-gray-400">Status Pembayaran</span>
-                            @if($purchase->status == 'lunas')
-                                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Lunas</span>
-                            @elseif($purchase->status == 'sebagian')
-                                <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">Down Payment</span>
+                            <div class="flex flex-wrap gap-1 mt-1">
+                                @if($purchase->is_inden)
+                                    @if(!$purchase->inden_received)
+                                        <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">Inden</span>
+                                    @else
+                                        <span class="bg-teal-100 text-teal-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-teal-900 dark:text-teal-300">Diterima</span>
+                                    @endif
+                                @endif
+                                @if($purchase->status == 'lunas')
+                                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Lunas</span>
+                                @elseif($purchase->status == 'sebagian')
+                                    <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">Down Payment</span>
+                                @else
+                                    <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Belum Lunas</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        {{-- Inden Info --}}
+                        @if($purchase->is_inden)
+                        <div class="border border-purple-200 dark:border-purple-800 rounded-lg p-3 bg-purple-50 dark:bg-purple-900/20">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span class="text-sm font-medium text-purple-700 dark:text-purple-300">Barang Inden</span>
+                            </div>
+                            @if($purchase->inden_received)
+                                <p class="text-xs text-teal-700 dark:text-teal-300 flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    Diterima: {{ \Carbon\Carbon::parse($purchase->received_date)->format('d F Y') }}
+                                </p>
                             @else
-                                <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Belum Lunas</span>
+                                <p class="text-xs text-purple-600 dark:text-purple-400">Barang belum diterima — stok belum ditambahkan</p>
                             @endif
                         </div>
+                        @endif
+
                         <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 space-y-2">
                             <div class="flex justify-between text-sm">
                                 <span class="text-gray-500 dark:text-gray-400">Total</span>
@@ -156,6 +184,30 @@
                     </div>
                 </div>
             </div>
+
+            {{-- Terima Barang Inden Button --}}
+            @if($purchase->is_inden && !$purchase->inden_received)
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+                        Terima Barang Inden
+                    </h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Konfirmasi bahwa barang inden sudah diterima. Stok akan ditambahkan.</p>
+                    <form action="{{ route('purchases.receive', $purchase) }}" method="POST" onsubmit="return confirm('Konfirmasi terima barang? Stok akan ditambahkan ke inventori.');">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tanggal Diterima</label>
+                            <input type="date" name="received_date" value="{{ date('Y-m-d') }}" required class="block w-full text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-purple-500 focus:ring-purple-500 rounded-md shadow-sm">
+                        </div>
+                        <button type="submit" class="w-full inline-flex justify-center items-center px-4 py-2 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Konfirmasi Terima Barang
+                        </button>
+                    </form>
+                </div>
+            </div>
+            @endif
 
             <a href="{{ route('purchases.index') }}" class="w-full inline-flex justify-center items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                 Kembali

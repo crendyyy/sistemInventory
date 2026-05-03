@@ -163,12 +163,41 @@ class RealisticDataSeeder extends Seeder
                 ],
                 'pay_type' => 'belum_bayar', 'notes' => 'PO tambahan oring 2*9',
             ],
+            // --- INDEN / PRE-ORDER (3) ---
+            [
+                'supplier_idx' => 0, 'date' => Carbon::create(2026, 5, 2),
+                'items' => [
+                    ['product_idx' => 10, 'qty' => 20, 'price' => 61425],
+                    ['product_idx' => 13, 'qty' => 15, 'price' => 22275],
+                ],
+                'pay_type' => 'sebagian', 'pay_pct' => 50, 'is_inden' => true,
+                'notes' => 'Inden selang HAMMERSPIR & HI POWER — stok menipis, ETA 7 hari',
+            ],
+            [
+                'supplier_idx' => 2, 'date' => Carbon::create(2026, 5, 3),
+                'items' => [
+                    ['product_idx' => 17, 'qty' => 10, 'price' => 140800],
+                    ['product_idx' => 18, 'qty' => 5, 'price' => 189750],
+                ],
+                'pay_type' => 'belum_bayar', 'is_inden' => true,
+                'notes' => 'Inden HI POWER 4SH besar — stok habis, ETA 14 hari',
+            ],
+            [
+                'supplier_idx' => 5, 'date' => Carbon::create(2026, 5, 3),
+                'items' => [
+                    ['product_idx' => 6, 'qty' => 10, 'price' => 72800],
+                ],
+                'pay_type' => 'lunas', 'is_inden' => true,
+                'notes' => 'Inden selang 1" R1 — sudah bayar lunas, tunggu kiriman',
+            ],
         ];
 
         $purchaseNo = 1;
         foreach ($purchaseData as $pd) {
             $supplier = $suppliers[$pd['supplier_idx']];
             $invoiceNo = 'PUR-' . $pd['date']->format('Ymd') . '-' . str_pad($purchaseNo, 4, '0', STR_PAD_LEFT);
+
+            $isInden = $pd['is_inden'] ?? false;
 
             $totalAmount = 0;
             $itemsToCreate = [];
@@ -200,6 +229,8 @@ class RealisticDataSeeder extends Seeder
                 'paid_amount' => $paidAmount,
                 'remaining' => max(0, $totalAmount - $paidAmount),
                 'status' => $pd['pay_type'],
+                'is_inden' => $isInden,
+                'inden_received' => false,
                 'paid_date' => $pd['pay_type'] === 'lunas' ? $pd['date'] : null,
                 'notes' => $pd['notes'],
             ]);
@@ -213,8 +244,10 @@ class RealisticDataSeeder extends Seeder
                     'price' => $ic['price'],
                     'subtotal' => $ic['subtotal'],
                 ]);
-                // Stok selalu nambah saat pembelian (barang sudah diterima)
-                $ic['product']->increment('stock', $ic['qty']);
+                // Stok nambah hanya jika BUKAN inden
+                if (!$isInden) {
+                    $ic['product']->increment('stock', $ic['qty']);
+                }
                 $ic['product']->update(['buy_price' => $ic['price']]);
             }
 
@@ -225,7 +258,7 @@ class RealisticDataSeeder extends Seeder
                     'type' => 'credit',
                     'amount' => $paidAmount,
                     'reference' => $invoiceNo,
-                    'description' => 'Pembayaran Pembelian ' . $invoiceNo,
+                    'description' => 'Pembayaran Pembelian ' . $invoiceNo . ($isInden ? ' (Inden)' : ''),
                     'transactionable_type' => Purchase::class,
                     'transactionable_id' => $purchase->id,
                     'user_id' => $userId,
@@ -497,10 +530,11 @@ class RealisticDataSeeder extends Seeder
             ->update(['stock_minimum' => 5]);
 
         $this->command->info('✅ Data realistis berhasil ditambahkan!');
-        $this->command->info('   - 12 Pembelian (4 lunas, 4 sebagian, 4 belum bayar)');
+        $this->command->info('   - 15 Pembelian (4 lunas, 4 sebagian, 4 belum bayar, 3 inden)');
         $this->command->info('   - 15 Penjualan (6 lunas, 5 sebagian, 4 belum bayar)');
         $this->command->info('   - 18 Transaksi kas manual (termasuk 1 cancelled)');
         $this->command->info('   - Modal awal 60 juta');
         $this->command->info('   - Stok bervariasi (terisi, menipis, habis)');
+        $this->command->info('   - 3 Barang inden (belum diterima, stok belum nambah)');
     }
 }

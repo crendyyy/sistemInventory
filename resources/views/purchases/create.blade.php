@@ -51,6 +51,26 @@
                     </div>
                 </div>
 
+                <!-- Inden (Pre-Order) Toggle -->
+                <div class="mb-8" x-data="{ inden: false }">
+                    <label class="flex items-center gap-3 cursor-pointer p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                        <input type="checkbox" name="is_inden" value="1" x-model="inden" class="w-5 h-5 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600">
+                        <div>
+                            <span class="font-medium text-gray-900 dark:text-white flex items-center gap-2">
+                                <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Barang Inden (Pre-Order)
+                            </span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">Centang jika barang belum diterima / masih dipesan</span>
+                        </div>
+                    </label>
+                    <div x-show="inden" x-transition class="mt-2 p-3 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
+                        <p class="text-sm text-purple-700 dark:text-purple-300 flex items-center gap-2">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Stok <strong>tidak akan bertambah</strong> sampai barang dikonfirmasi diterima.
+                        </p>
+                    </div>
+                </div>
+
                 <!-- Repeater Items -->
                 <div class="mb-8 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
                     <div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">

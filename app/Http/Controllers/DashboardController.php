@@ -46,13 +46,22 @@ class DashboardController extends Controller
                        ->take(5)
                        ->get();
 
+        // 6. Pembelian Inden (Belum Diterima)
+        $indenPurchases = Purchase::where('is_inden', true)
+                                  ->where('inden_received', false)
+                                  ->with('supplier')
+                                  ->latest()
+                                  ->take(5)
+                                  ->get();
+
         return view('dashboard', compact(
             'nilaiStok', 
             'penjualanBulanIni', 
             'pembelianBulanIni', 
             'saldoKas',
             'lowStockProducts',
-            'piutang'
+            'piutang',
+            'indenPurchases'
         ));
     }
 }
